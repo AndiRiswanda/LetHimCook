@@ -40,4 +40,21 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    // RecyclerView
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
+    // Navigation Component (Fragment + NavHost)
+    implementation("androidx.navigation:navigation-fragment:2.5.3")
+    implementation ("androidx.navigation:navigation-ui:2.5.3")
+    // Retrofit + Gson converter
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    // OkHttp (for logging)
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.3")
+    // SQLite no need implementation, sudah di anroidnya
+    // Material Design components (for MaterialButton, etc.)
+    implementation ("com.google.android.material:material:1.8.0")
+    // Lifecycle + ViewModel
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+
 }
