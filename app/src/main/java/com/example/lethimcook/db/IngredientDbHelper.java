@@ -33,15 +33,16 @@ public class IngredientDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLE);
 
-        // Pre‐populate with some ingredients (id, name, desc, imageRes)
+// Pre‐populate with some ingredients (id, name, desc, imageRes)
         db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES (1, 'Turmeric', 'Yellow root spice, used in curries', " +
                 R.drawable.turmeric + ");");
         db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES (2, 'Ginger', 'Aromatic root, used fresh or dried', " +
                 R.drawable.ginger + ");");
         db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES (3, 'Cumin', 'Ground seeds used in many cuisines', " +
                 R.drawable.cumin + ");");
-        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES (4, 'Paprika', 'Red pepper spice’, " +
+        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES (4, 'Paprika', 'Red pepper spice', " +
                 R.drawable.paprika + ");");
+// … add more if you like
         // … add more if you like
     }
 

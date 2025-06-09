@@ -3,15 +3,16 @@ package com.example.lethimcook.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide; // we’ll add Glide dependency, or use Picasso
+
+import com.bumptech.glide.Glide;
 import com.example.lethimcook.R;
 import com.example.lethimcook.Model.Meal;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
 
@@ -40,10 +41,10 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
         Meal meal = mealList.get(position);
         holder.tvName.setText(meal.getName());
-        // Load thumbnail via Glide (add Glide dependency)
+        // Load thumbnail via Glide
         Glide.with(holder.itemView.getContext())
                 .load(meal.getThumbnailUrl())
-                .placeholder(R.drawable.placeholder_ingredient) // add placeholder.png in drawable
+                .placeholder(R.drawable.placeholder_ingredient)
                 .into(holder.imgThumb);
 
         holder.btnDetail.setOnClickListener(v -> {
@@ -61,13 +62,13 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     static class MealViewHolder extends RecyclerView.ViewHolder {
         ImageView imgThumb;
         TextView tvName;
-        ImageButton btnDetail;
+        MaterialButton btnDetail;  // Changed from ImageButton to MaterialButton
 
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             imgThumb = itemView.findViewById(R.id.imgMealThumb);
             tvName = itemView.findViewById(R.id.tvMealName);
-            btnDetail = itemView.findViewById(R.id.btnMealDetail);
+            btnDetail = itemView.findViewById(R.id.btnMealDetail);  // This should now match the XML
         }
     }
 }

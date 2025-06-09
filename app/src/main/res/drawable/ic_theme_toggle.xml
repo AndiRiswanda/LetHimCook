@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Use moon icon when in dark mode -->
+    <item android:drawable="@drawable/sun" android:state_checked="true" />
+    <!-- Use sun icon when in light mode -->
+    <item android:drawable="@drawable/moon" />
+</selector>

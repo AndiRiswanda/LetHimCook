@@ -30,7 +30,6 @@ public class SpiceDetailActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         imgDetail = findViewById(R.id.imgDetail);
         tvNameDetail = findViewById(R.id.tvNameDetail);

@@ -1,15 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Purple colors -->
-    <color name="purple_500">#6200EE</color>
-    <color name="purple_700">#3700B3</color>
-    <color name="purple_200">#BB86FC</color>
+    <!-- Primary colors -->
+    <color name="primary">#6750A4</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="primary_container">#EADDFF</color>
+    <color name="on_primary_container">#21005D</color>
 
-    <!-- Teal colors -->
-    <color name="teal_200">#03DAC5</color>
-    <color name="teal_700">#018786</color>
+    <!-- Secondary colors -->
+    <color name="secondary">#00A3B4</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="secondary_container">#BFEDF3</color>
+    <color name="on_secondary_container">#00363D</color>
+
+    <!-- Tertiary colors -->
+    <color name="tertiary">#7F5370</color>
+    <color name="on_tertiary">#FFFFFF</color>
+    <color name="tertiary_container">#FFD8EC</color>
+    <color name="on_tertiary_container">#31111D</color>
+
+    <!-- Error colors -->
+    <color name="error">#B3261E</color>
+    <color name="on_error">#FFFFFF</color>
+    <color name="error_container">#F9DEDC</color>
+    <color name="on_error_container">#410E0B</color>
+
+    <!-- Surface colors -->
+    <color name="background">#FFFBFE</color>
+    <color name="on_background">#1C1B1F</color>
+    <color name="surface">#FFFBFE</color>
+    <color name="on_surface">#1C1B1F</color>
+    <color name="surface_variant">#E7E0EC</color>
+    <color name="on_surface_variant">#49454F</color>
+    <color name="outline">#79747E</color>
+    <color name="outline_variant">#CAC4D0</color>
+
+    <!-- Dark theme colors -->
+    <color name="primary_dark">#D0BCFF</color>
+    <color name="on_primary_dark">#381E72</color>
+    <color name="primary_container_dark">#4F378B</color>
+    <color name="on_primary_container_dark">#EADDFF</color>
+
+    <color name="secondary_dark">#86D2E1</color>
+    <color name="on_secondary_dark">#00363D</color>
+    <color name="secondary_container_dark">#004F58</color>
+    <color name="on_secondary_container_dark">#BFEDF3</color>
+
+    <color name="tertiary_dark">#EFB8D2</color>
+    <color name="on_tertiary_dark">#492532</color>
+    <color name="tertiary_container_dark">#633B48</color>
+    <color name="on_tertiary_container_dark">#FFD8EC</color>
+
+    <color name="background_dark">#1C1B1F</color>
+    <color name="on_background_dark">#E6E1E5</color>
+    <color name="surface_dark">#1C1B1F</color>
+    <color name="on_surface_dark">#E6E1E5</color>
+    <color name="surface_variant_dark">#49454F</color>
+    <color name="on_surface_variant_dark">#CAC4D0</color>
+
+    <!-- Legacy colors for backward compatibility -->
+    <color name="purple_500">@color/primary</color>
+    <color name="purple_700">#4F378B</color>
+    <color name="purple_200">@color/primary_dark</color>
+    <color name="teal_200">@color/secondary</color>
+    <color name="teal_700">@color/secondary_container_dark</color>
 
     <!-- Other colors -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="ripple_color">#1F000000</color>
+    <color name="ripple_color_dark">#33FFFFFF</color>
+    <color name="scrim">#52000000</color>
 </resources>
