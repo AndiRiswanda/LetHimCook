@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">LetHimCook</string>
+    <string name="ingredient_image">Ingredient image</string>
+    <string name="view_details">View details</string>
 </resources>
