@@ -57,7 +57,22 @@ public class MainActivity extends AppCompatActivity {
                 .findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
 
+        // Setup Bottom Navigation
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
+        // Fix navigation issues by handling reselection properly
+        bottomNavigationView.setOnItemReselectedListener(item -> {
+            // Do nothing when the same tab is reselected
+            // This prevents the fragment from being recreated
+        });
+
+        // Handle item selection separately to ensure proper navigation
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            // Navigate to the appropriate destination
+            navController.navigate(item.getItemId());
+            return true;
+        });
     }
 
 
@@ -132,4 +147,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onPrepareOptionsMenu(menu);
     }
+
 }
