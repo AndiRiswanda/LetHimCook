@@ -50,4 +50,21 @@
             style="@style/Widget.Material3.Button.IconButton.Filled"
             android:contentDescription="@string/view_details" />
     </LinearLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnFavorite"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        app:icon="@drawable/baseline_favorite_border_24"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        app:cornerRadius="18dp"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:contentDescription="Add to favorites"
+     />
 </com.google.android.material.card.MaterialCardView>

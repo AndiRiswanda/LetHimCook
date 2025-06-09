@@ -70,4 +70,9 @@
     <color name="ripple_color">#1F000000</color>
     <color name="ripple_color_dark">#33FFFFFF</color>
     <color name="scrim">#52000000</color>
+    <color name="favorite_active">#FF0000</color>
+    <color name="favorite_inactive">#114B0000</color>
+    <color name="favorite_active_background">#22E91E63</color>
+    <color name="favorite_inactive_background">#11E91E63</color>
+    <color name="favorite_button_background">#FFFFFF</color>
 </resources>

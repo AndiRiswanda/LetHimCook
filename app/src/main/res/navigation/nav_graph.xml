@@ -24,4 +24,11 @@
             app:destination="@id/homeFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.lethimcook.FavoritesFragment"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_favorites">
+    </fragment>
+
 </navigation>

@@ -15,8 +15,9 @@ import com.example.lethimcook.Adapter.MealAdapter;
 import com.example.lethimcook.Model.Meal;
 import com.example.lethimcook.Api.MealResponse;
 import com.example.lethimcook.Api.RetrofitClient;
-//import com.facebook.shimmer.ShimmerFrameLayout; // optional for shimmer
+import com.example.lethimcook.db.FavoritesDbHelper;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.ProgressBar;
@@ -33,6 +34,7 @@ public class RecipeListFragment extends Fragment implements MealAdapter.OnMealCl
     private ProgressBar progressBar;
     private MaterialButton btnRefresh;
     private MealAdapter adapter;
+    private FavoritesDbHelper dbHelper;
 
     public RecipeListFragment() {
         // Required empty public constructor
@@ -41,7 +43,7 @@ public class RecipeListFragment extends Fragment implements MealAdapter.OnMealCl
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // If you want to pass args, do it here
+        dbHelper = new FavoritesDbHelper(requireContext());
     }
 
     @Nullable
@@ -73,7 +75,7 @@ public class RecipeListFragment extends Fragment implements MealAdapter.OnMealCl
         btnRefresh.setVisibility(View.GONE);
         rvMeals.setVisibility(View.GONE);
 
-        // Example: search for “chicken” (you can parameterize later)
+        // Example: search for "chicken" (you can parameterize later)
         Call<MealResponse> call = RetrofitClient.getInstance()
                 .getApiService()
                 .searchMeals("chicken");
@@ -85,7 +87,7 @@ public class RecipeListFragment extends Fragment implements MealAdapter.OnMealCl
                 if (response.isSuccessful() && response.body() != null) {
                     List<Meal> meals = response.body().getMeals();
                     if (meals != null && !meals.isEmpty()) {
-                        adapter = new MealAdapter(meals, RecipeListFragment.this);
+                        adapter = new MealAdapter(meals, RecipeListFragment.this, dbHelper);
                         rvMeals.setAdapter(adapter);
                         rvMeals.setVisibility(View.VISIBLE);
                     } else {
@@ -109,8 +111,35 @@ public class RecipeListFragment extends Fragment implements MealAdapter.OnMealCl
 
     @Override
     public void onMealClick(Meal meal) {
-        // For simplicity, show a Toast with meal name, category, area
-        String info = meal.getName() + " (" + meal.getCategory() + " - " + meal.getArea() + ")";
-        Toast.makeText(getContext(), info, Toast.LENGTH_LONG).show();
+        // Navigate to RecipeDetail activity
+        RecipeDetail.start(requireContext(), meal.getIdMeal());
+    }
+
+    @Override
+    public void onFavoriteToggle(Meal meal, boolean isFavorite) {
+        if (isFavorite) {
+            // Add to favorites
+            long result = dbHelper.addFavorite(meal);
+            if (result > 0) {
+                Snackbar.make(requireView(), "Added to favorites", Snackbar.LENGTH_SHORT).show();
+            } else {
+                Snackbar.make(requireView(), "Error adding to favorites", Snackbar.LENGTH_SHORT).show();
+            }
+        } else {
+            // Remove from favorites
+            boolean removed = dbHelper.removeFavorite(meal.getIdMeal());
+            if (removed) {
+                Snackbar.make(requireView(), "Removed from favorites", Snackbar.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Refresh favorite status in the adapter when coming back to this fragment
+        if (adapter != null) {
+            adapter.notifyDataSetChanged(); // This will cause all items to check their favorite status again
+        }
     }
 }

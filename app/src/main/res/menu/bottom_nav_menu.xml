@@ -14,4 +14,9 @@
         android:title="Recipes"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/favoritesFragment"
+        android:icon="@drawable/baseline_favorite_24"
+        android:title="Favorites"
+        app:showAsAction="ifRoom" />
 </menu>
