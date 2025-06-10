@@ -1,62 +1,85 @@
 package com.example.lethimcook.db;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
+import com.example.lethimcook.Api.IngredientListResponse;
+import com.example.lethimcook.Api.RetrofitClient;
 import com.example.lethimcook.Model.Ingredient;
+import com.example.lethimcook.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class IngredientRepository {
-    private IngredientDbHelper dbHelper;
-    private ExecutorService executor;
+    private static final String TAG = "IngredientRepository";
     private Handler mainHandler;
 
     public interface LoadIngredientsCallback {
         void onIngredientsLoaded(List<Ingredient> ingredientList);
+        void onError(String message);
     }
 
-    public IngredientRepository(Context context) {
-        dbHelper = new IngredientDbHelper(context);
-        executor = Executors.newSingleThreadExecutor();
+    public IngredientRepository() {
         mainHandler = new Handler(Looper.getMainLooper());
     }
 
     public void getAllIngredients(final LoadIngredientsCallback callback) {
-        executor.execute(() -> {
-            SQLiteDatabase db = dbHelper.getReadableDatabase();
-            List<Ingredient> list = new ArrayList<>();
+        Call<IngredientListResponse> call = RetrofitClient.getInstance()
+                .getApiService()
+                .getAllIngredients();
 
-            String[] projection = {
-                    IngredientDbHelper.COLUMN_ID,
-                    IngredientDbHelper.COLUMN_NAME,
-                    IngredientDbHelper.COLUMN_DESC,
-                    IngredientDbHelper.COLUMN_IMAGE_RES
-            };
-            Cursor cursor = db.query(
-                    IngredientDbHelper.TABLE_NAME,
-                    projection,
-                    null, null, null, null, null
-            );
+        call.enqueue(new Callback<IngredientListResponse>() {
+            @Override
+            public void onResponse(Call<IngredientListResponse> call, Response<IngredientListResponse> response) {
+                if (response.isSuccessful() && response.body() != null
+                        && response.body().getIngredients() != null) {
 
-            while (cursor.moveToNext()) {
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow(IngredientDbHelper.COLUMN_ID));
-                String name = cursor.getString(cursor.getColumnIndexOrThrow(IngredientDbHelper.COLUMN_NAME));
-                String desc = cursor.getString(cursor.getColumnIndexOrThrow(IngredientDbHelper.COLUMN_DESC));
-                int imageRes = cursor.getInt(cursor.getColumnIndexOrThrow(IngredientDbHelper.COLUMN_IMAGE_RES));
-                Ingredient ing = new Ingredient(id, name, desc, imageRes);
-                list.add(ing);
+                    List<Ingredient> ingredients = new ArrayList<>();
+                    List<IngredientListResponse.ApiIngredient> apiIngredients = response.body().getIngredients();
+
+                    for (IngredientListResponse.ApiIngredient apiIngredient : apiIngredients) {
+                        // Convert API ingredient to your model
+                        String id = apiIngredient.getId();
+                        String name = apiIngredient.getName();
+                        String description = apiIngredient.getDescription();
+
+                        if (name != null && !name.isEmpty()) {
+                            // Generate image URL for the ingredient
+                            String imageUrl = "https://www.themealdb.com/images/ingredients/" +
+                                    name.replace(" ", "%20") + ".png";
+
+                            // Create and add the ingredient
+                            // Use R.drawable.placeholder_ingredient as a placeholder
+                            Ingredient ingredient = new Ingredient(
+                                    Integer.parseInt(id),
+                                    name,
+                                    description != null ? description : "",
+                                    R.drawable.placeholder_ingredient,
+                                    imageUrl
+                            );
+
+                            ingredients.add(ingredient);
+                        }
+                    }
+
+                    mainHandler.post(() -> callback.onIngredientsLoaded(ingredients));
+                } else {
+                    mainHandler.post(() -> callback.onError("Failed to load ingredients"));
+                }
             }
-            cursor.close();
-            db.close();
 
-            mainHandler.post(() -> callback.onIngredientsLoaded(list));
+            @Override
+            public void onFailure(Call<IngredientListResponse> call, Throwable t) {
+                Log.e(TAG, "API call failed", t);
+                mainHandler.post(() -> callback.onError("Network error: " + t.getMessage()));
+            }
         });
     }
 }

@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.lethimcook.Adapter.IngredientMeasureAdapter;
 import com.example.lethimcook.Api.MealDetailResponse;
 import com.example.lethimcook.Api.RetrofitClient;
+import com.example.lethimcook.Model.Ingredient;
 import com.example.lethimcook.Model.IngredientMeasure;
 import com.example.lethimcook.Model.Meal;
 import com.example.lethimcook.db.FavoritesDbHelper;
@@ -204,6 +205,8 @@ public class RecipeDetail extends AppCompatActivity {
         loadIngredients();
     }
 
+// Inside RecipeDetail.java, update the loadIngredients() method:
+
     private void loadIngredients() {
         List<IngredientMeasure> ingredientList = new ArrayList<>();
 
@@ -225,8 +228,22 @@ public class RecipeDetail extends AppCompatActivity {
 
         // Update the adapter with the ingredients
         ingredientAdapter.updateIngredients(ingredientList);
-    }
 
+        // Set click listener for ingredients
+        ingredientAdapter.setOnIngredientClickListener(ingredientMeasure -> {
+            // Create an Ingredient object from the IngredientMeasure
+            Ingredient ingredient = new Ingredient(
+                    0, // ID doesn't matter here as it's just for display
+                    ingredientMeasure.getIngredient(),
+                    ingredientMeasure.getIngredient(), // No description available from this context
+                    R.drawable.placeholder_ingredient, // Default resource
+                    ingredientMeasure.getImageUrl()
+            );
+
+            // Navigate to SpiceDetailActivity
+            SpiceDetailActivity.start(RecipeDetail.this, ingredient);
+        });
+    }
     private void updateFavoriteButtonState() {
         boolean isFavorite = dbHelper.isFavorite(mealId);
 

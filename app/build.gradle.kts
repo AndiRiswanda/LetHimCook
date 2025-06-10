@@ -57,6 +57,10 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
     implementation ("com.github.bumptech.glide:glide:4.14.2")
+    implementation ("com.google.mlkit:image-labeling:17.0.7")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.14.2")
+
+
+
 
 }

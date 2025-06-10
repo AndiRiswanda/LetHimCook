@@ -5,18 +5,22 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface RecipeApiService {
-    // Example: https://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata
-    @GET("search.php")
-    Call<MealResponse> searchMeals(@Query("s") String name);
+    @GET("lookup.php")
+    Call<MealDetailResponse> getMealById(@Query("i") String id);
 
-    // e.g., list by category: https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood
+    // Keep your other methods unchanged
     @GET("filter.php")
     Call<MealResponse> getMealsByCategory(@Query("c") String category);
 
-    // e.g., random meal
     @GET("random.php")
     Call<MealResponse> getRandomMeal();
 
-    @GET("lookup.php")
-    Call<MealDetailResponse> getMealById(@Query("i") String mealId);
+    @GET("search.php")
+    Call<MealResponse> searchMealsByName(@Query("s") String name);
+
+    @GET("categories.php")
+    Call<CategoryResponse> getCategories();
+
+    @GET("list.php?i=list")
+    Call<IngredientListResponse> getAllIngredients();
 }

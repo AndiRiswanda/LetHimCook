@@ -22,4 +22,15 @@ public class IngredientMeasure {
     public String getImageUrl() {
         return imageUrl;
     }
+
+    // Helper method to convert to Ingredient object (optional)
+    public Ingredient toIngredient() {
+        return new Ingredient(
+                0, // No specific ID
+                ingredient,
+                "", // No description available
+                0,  // No local resource
+                imageUrl
+        );
+    }
 }

@@ -75,4 +75,6 @@
     <color name="favorite_active_background">#22E91E63</color>
     <color name="favorite_inactive_background">#11E91E63</color>
     <color name="favorite_button_background">#FFFFFF</color>
+
+
 </resources>

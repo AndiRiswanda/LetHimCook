@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.lethimcook.Model.Ingredient;
 import com.example.lethimcook.R;
 import com.google.android.material.button.MaterialButton;
@@ -41,7 +42,17 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     public void onBindViewHolder(@NonNull IngredientViewHolder holder, int position) {
         Ingredient ing = ingredientList.get(position);
         holder.tvName.setText(ing.getName());
-        holder.img.setImageResource(ing.getImageResId());
+
+        // Load image from URL if available, otherwise use resource
+        if (ing.hasImageUrl()) {
+            Glide.with(holder.itemView.getContext())
+                    .load(ing.getImageUrl())
+                    .placeholder(R.drawable.placeholder_ingredient)
+                    .into(holder.img);
+        } else {
+            holder.img.setImageResource(ing.getImageResId());
+        }
+
         holder.btnDetail.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onIngredientClick(ing);
