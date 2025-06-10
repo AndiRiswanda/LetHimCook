@@ -87,8 +87,8 @@ public class HomeFragment extends Fragment {
         });
 
         cardRecipe.setOnClickListener(v -> {
-            // Navigate to RecipeListFragment
-            Navigation.findNavController(v).navigate(R.id.action_home_to_recipeList);
+            Intent intent = new Intent(getActivity(), CommonMistakesActivity.class);
+            getActivity().startActivity(intent);
         });
     }
 
