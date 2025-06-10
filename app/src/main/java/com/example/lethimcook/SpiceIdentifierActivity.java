@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -18,18 +20,19 @@ import com.example.lethimcook.Adapter.IngredientAdapter;
 import com.example.lethimcook.Model.Ingredient;
 import com.example.lethimcook.db.IngredientRepository;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SpiceIdentifierActivity extends AppCompatActivity implements IngredientAdapter.OnIngredientClickListener {
-
+    private View errorLayout;
+    private TextView tvError;
+    private Button btnRefresh;
     private RecyclerView rvIngredients;
     private ProgressBar progressBar;
-    private TextView tvError;
     private EditText etIngredientSearch;
     private ImageButton btnClearSearch;
-
     private IngredientRepository repository;
     private IngredientAdapter adapter;
     private List<Ingredient> allIngredients = new ArrayList<>();
@@ -41,12 +44,14 @@ public class SpiceIdentifierActivity extends AppCompatActivity implements Ingred
         setContentView(R.layout.activity_spice_identifier);
 
         // Initialize views
+        errorLayout = findViewById(R.id.errorLayout);
+        btnRefresh = findViewById(R.id.btnRefresh);
         rvIngredients = findViewById(R.id.rvIngredients);
         progressBar = findViewById(R.id.progressBar);
         tvError = findViewById(R.id.tvError);
         etIngredientSearch = findViewById(R.id.etIngredientSearch);
         btnClearSearch = findViewById(R.id.btnClearSearch);
-
+        errorLayout.setVisibility(View.GONE);
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(v -> finish());
@@ -131,20 +136,28 @@ public class SpiceIdentifierActivity extends AppCompatActivity implements Ingred
     private void showLoading() {
         progressBar.setVisibility(View.VISIBLE);
         rvIngredients.setVisibility(View.GONE);
-        tvError.setVisibility(View.GONE);
+        errorLayout.setVisibility(View.GONE); // Hide error layout
     }
 
     private void showContent() {
         progressBar.setVisibility(View.GONE);
         rvIngredients.setVisibility(View.VISIBLE);
-        tvError.setVisibility(View.GONE);
+        errorLayout.setVisibility(View.GONE); // Hide error layout
     }
 
     private void showError(String message) {
         progressBar.setVisibility(View.GONE);
         rvIngredients.setVisibility(View.GONE);
-        tvError.setVisibility(View.VISIBLE);
+
+        // Show error layout with message
+        errorLayout.setVisibility(View.VISIBLE);
         tvError.setText(message);
+
+        // Set up refresh button click listener
+        btnRefresh.setOnClickListener(v -> {
+            showLoading(); // Show loading state first
+            loadIngredients(); // Call loadIngredients again to retry
+        });
     }
 
     @Override

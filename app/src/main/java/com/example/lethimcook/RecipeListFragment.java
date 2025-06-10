@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -33,7 +34,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RecipeListFragment extends Fragment implements MealAdapter.OnMealClickListener {
-
+    private LinearLayout errorLayout;
+    private MaterialButton btnRefresh;
     private RecyclerView rvMeals;
     private ProgressBar progressBar;
     private TextView tvError;
@@ -63,6 +65,8 @@ public class RecipeListFragment extends Fragment implements MealAdapter.OnMealCl
         rvMeals = view.findViewById(R.id.rvMeals);
         progressBar = view.findViewById(R.id.progressBar);
         tvError = view.findViewById(R.id.tvError);
+        errorLayout = view.findViewById(R.id.errorLayout);
+        btnRefresh = view.findViewById(R.id.btnRefresh);
         categoryChipGroup = view.findViewById(R.id.categoryChipGroup);
         searchView = view.findViewById(R.id.searchView);
         btnLoadMore = view.findViewById(R.id.btnLoadMore);
@@ -75,6 +79,7 @@ public class RecipeListFragment extends Fragment implements MealAdapter.OnMealCl
 
         return view;
     }
+
 
     private void setupRecyclerView() {
         rvMeals.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -97,6 +102,26 @@ public class RecipeListFragment extends Fragment implements MealAdapter.OnMealCl
                         && firstVisibleItemPosition >= 0) {
                     btnLoadMore.setVisibility(View.VISIBLE);
                 }
+            }
+        });
+    }
+
+
+    private void setupRefreshButton() {
+        btnRefresh.setOnClickListener(v -> {
+            // Hide error layout
+            errorLayout.setVisibility(View.GONE);
+
+            // Show loading indicator
+            progressBar.setVisibility(View.VISIBLE);
+
+            // Reload data based on current state
+            if (isSearching && searchView.getQuery() != null && !searchView.getQuery().toString().isEmpty()) {
+                searchMeals(searchView.getQuery().toString());
+            } else if (!currentCategory.isEmpty()) {
+                loadMealsByCategory(currentCategory);
+            } else {
+                loadCategories(); // Reload categories first
             }
         });
     }
@@ -149,7 +174,30 @@ public class RecipeListFragment extends Fragment implements MealAdapter.OnMealCl
 
             @Override
             public void onFailure(@NonNull Call<CategoryResponse> call, @NonNull Throwable t) {
-                showError("Network error: " + t.getMessage());
+                progressBar.setVisibility(View.GONE);
+                btnLoadMore.setVisibility(View.GONE);
+
+                // Show error layout with refresh button
+                errorLayout.setVisibility(View.VISIBLE);
+                tvError.setText("Network error: " + t.getMessage());
+
+                // Set up refresh button click listener
+                btnRefresh.setOnClickListener(v -> {
+                    // Hide error layout
+                    errorLayout.setVisibility(View.GONE);
+
+                    // Show loading indicator
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    // Retry loading data
+                    if (currentCategory == null) {
+                        loadRandomMeals();
+                        loadCategories();
+                    } else {
+                        loadCategories();
+                        loadMealsByCategory(currentCategory);
+                    }
+                });
             }
         });
     }
@@ -246,6 +294,30 @@ public class RecipeListFragment extends Fragment implements MealAdapter.OnMealCl
                     if (loadedCount[0] >= totalToLoad) {
                         updateMealList(randomMeals, true);
                     }
+                    progressBar.setVisibility(View.GONE);
+                    btnLoadMore.setVisibility(View.GONE);
+
+                    // Show error layout with refresh button
+                    errorLayout.setVisibility(View.VISIBLE);
+                    tvError.setText("Network error: " + t.getMessage());
+
+                    // Set up refresh button click listener
+                    btnRefresh.setOnClickListener(v -> {
+                        // Hide error layout
+                        errorLayout.setVisibility(View.GONE);
+
+                        // Show loading indicator
+                        progressBar.setVisibility(View.VISIBLE);
+
+                        // Retry loading data
+                        if (currentCategory == null) {
+                            loadCategories();
+                            loadRandomMeals();
+                        } else {
+                            loadCategories();
+                            loadMealsByCategory(currentCategory);
+                        }
+                    });
                 }
             });
         }
@@ -298,7 +370,29 @@ public class RecipeListFragment extends Fragment implements MealAdapter.OnMealCl
             @Override
             public void onFailure(@NonNull Call<MealResponse> call, @NonNull Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                showError("Network error: " + t.getMessage());
+                btnLoadMore.setVisibility(View.GONE);
+
+                // Show error layout with refresh button
+                errorLayout.setVisibility(View.VISIBLE);
+                tvError.setText("Network error: " + t.getMessage());
+
+                // Set up refresh button click listener
+                btnRefresh.setOnClickListener(v -> {
+                    // Hide error layout
+                    errorLayout.setVisibility(View.GONE);
+
+                    // Show loading indicator
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    // Retry loading data
+                    if (currentCategory == null) {
+                        loadRandomMeals();
+                        loadCategories();
+                    } else {
+                        loadCategories();
+                        loadMealsByCategory(currentCategory);
+                    }
+                });
             }
         });
     }
@@ -329,7 +423,29 @@ public class RecipeListFragment extends Fragment implements MealAdapter.OnMealCl
             @Override
             public void onFailure(@NonNull Call<MealResponse> call, @NonNull Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                showError("Network error: " + t.getMessage());
+                btnLoadMore.setVisibility(View.GONE);
+
+                // Show error layout with refresh button
+                errorLayout.setVisibility(View.VISIBLE);
+                tvError.setText("Network error: " + t.getMessage());
+
+                // Set up refresh button click listener
+                btnRefresh.setOnClickListener(v -> {
+                    // Hide error layout
+                    errorLayout.setVisibility(View.GONE);
+
+                    // Show loading indicator
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    // Retry loading data
+                    if (currentCategory == null) {
+                        loadRandomMeals();
+                        loadCategories();
+                    } else {
+                        loadCategories();
+                        loadMealsByCategory(currentCategory);
+                    }
+                });
             }
         });
     }
@@ -373,7 +489,30 @@ public class RecipeListFragment extends Fragment implements MealAdapter.OnMealCl
 
                     @Override
                     public void onFailure(@NonNull Call<MealResponse> call, @NonNull Throwable t) {
-                        // Keep the button visible so user can try again
+                        progressBar.setVisibility(View.GONE);
+                        btnLoadMore.setVisibility(View.GONE);
+
+                        // Show error layout with refresh button
+                        errorLayout.setVisibility(View.VISIBLE);
+                        tvError.setText("Network error: " + t.getMessage());
+
+                        // Set up refresh button click listener
+                        btnRefresh.setOnClickListener(v -> {
+                            // Hide error layout
+                            errorLayout.setVisibility(View.GONE);
+
+                            // Show loading indicator
+                            progressBar.setVisibility(View.VISIBLE);
+
+                            // Retry loading data
+                            if (currentCategory == null) {
+                                loadRandomMeals();
+                                loadCategories();
+                            } else {
+                                loadCategories();
+                                loadMealsByCategory(currentCategory);
+                            }
+                        });
                     }
                 });
             }
@@ -437,6 +576,31 @@ public class RecipeListFragment extends Fragment implements MealAdapter.OnMealCl
                         updateMealList(randomMeals, false);
                         btnLoadMore.setEnabled(true);
                     }
+
+                    progressBar.setVisibility(View.GONE);
+                    btnLoadMore.setVisibility(View.GONE);
+
+                    // Show error layout with refresh button
+                    errorLayout.setVisibility(View.VISIBLE);
+                    tvError.setText("Network error: " + t.getMessage());
+
+                    // Set up refresh button click listener
+                    btnRefresh.setOnClickListener(v -> {
+                        // Hide error layout
+                        errorLayout.setVisibility(View.GONE);
+
+                        // Show loading indicator
+                        progressBar.setVisibility(View.VISIBLE);
+
+                        // Retry loading data
+                        if (currentCategory == null) {
+                            loadRandomMeals();
+                            loadCategories();
+                        } else {
+                            loadCategories();
+                            loadMealsByCategory(currentCategory);
+                        }
+                    });
                 }
             });
         }
@@ -444,6 +608,8 @@ public class RecipeListFragment extends Fragment implements MealAdapter.OnMealCl
 
     private void updateMealList(List<Meal> meals, boolean replaceExisting) {
         progressBar.setVisibility(View.GONE);
+        errorLayout.setVisibility(View.GONE);
+        rvMeals.setVisibility(View.VISIBLE);
 
         if (meals.isEmpty()) {
             if (replaceExisting) {
@@ -460,9 +626,7 @@ public class RecipeListFragment extends Fragment implements MealAdapter.OnMealCl
 
         mealList.addAll(meals);
         adapter.notifyDataSetChanged();
-        tvError.setVisibility(View.GONE);
     }
-
     private void showError(String message) {
         tvError.setText(message);
         tvError.setVisibility(View.VISIBLE);

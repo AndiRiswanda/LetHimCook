@@ -8,7 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:paddingBottom="24dp">
 
         <!-- Hero Image -->
         <ImageView
@@ -47,10 +48,50 @@
             android:shadowDx="1"
             android:shadowDy="1"
             android:shadowRadius="4"
+            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="@id/imgHero"
             app:layout_constraintStart_toStartOf="@id/imgHero"
-            app:layout_constraintEnd_toEndOf="@id/imgHero"
-            android:layout_marginBottom="16dp"/>
+            app:layout_constraintEnd_toEndOf="@id/imgHero"/>
+
+        <!-- Tip of the Day (moved up) -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardTip"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="3dp"
+            app:cardBackgroundColor="#FFFDE7"
+            app:layout_constraintTop_toBottomOf="@id/imgHero"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Bro Tip of the Day"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="#33691E"/>
+
+                <TextView
+                    android:id="@+id/tvTipContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Turmeric is bright yellow, while ginger is pale brown with a fibrous texture. Turmeric stains everything it touches!"
+                    android:textSize="14sp"
+                    android:textColor="#555555"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <!-- Subtitle -->
         <TextView
@@ -63,11 +104,11 @@
             android:textStyle="italic"
             android:layout_marginTop="16dp"
             android:layout_marginHorizontal="24dp"
-            app:layout_constraintTop_toBottomOf="@id/imgHero"
+            app:layout_constraintTop_toBottomOf="@id/cardTip"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- Feature Cards -->
+        <!-- Feature Card 1 -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardSpice"
             android:layout_width="0dp"
@@ -76,12 +117,12 @@
             android:layout_marginHorizontal="16dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
-            app:layout_constraintTop_toBottomOf="@id/tvTagline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:foreground="?attr/selectableItemBackground"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            app:layout_constraintTop_toBottomOf="@id/tvTagline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -93,11 +134,11 @@
                     android:layout_height="80dp"
                     android:src="@drawable/cooking"
                     android:padding="8dp"
+                    android:layout_marginStart="16dp"
+                    android:contentDescription="Spice identifier icon"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="16dp"
-                    android:contentDescription="Spice identifier icon"/>
+                    app:layout_constraintStart_toStartOf="parent"/>
 
                 <TextView
                     android:id="@+id/tvSpiceTitle"
@@ -125,10 +166,10 @@
                     app:layout_constraintStart_toEndOf="@id/imgSpiceIcon"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="@id/imgSpiceIcon"/>
-
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- Feature Card 2 -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardRecipe"
             android:layout_width="0dp"
@@ -137,12 +178,12 @@
             android:layout_marginHorizontal="16dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
-            app:layout_constraintTop_toBottomOf="@id/cardSpice"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:foreground="?attr/selectableItemBackground"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            app:layout_constraintTop_toBottomOf="@id/cardSpice"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -154,11 +195,11 @@
                     android:layout_height="80dp"
                     android:src="@drawable/chef"
                     android:padding="8dp"
+                    android:layout_marginStart="16dp"
+                    android:contentDescription="Recipe list icon"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="16dp"
-                    android:contentDescription="Recipe list icon"/>
+                    app:layout_constraintStart_toStartOf="parent"/>
 
                 <TextView
                     android:id="@+id/tvRecipeTitle"
@@ -186,47 +227,68 @@
                     app:layout_constraintStart_toEndOf="@id/imgRecipeIcon"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="@id/imgRecipeIcon"/>
-
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Tip of the Day -->
+        <!-- Feature Card 3 -->
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardTip"
+            android:id="@+id/cardQuiz"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="16dp"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="24dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="#E8F5E9"
+            app:cardElevation="4dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintTop_toBottomOf="@id/cardRecipe"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintEnd_toEndOf="parent">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imgQuizIcon"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/icons8_curry_64"
+                    android:padding="8dp"
+                    android:layout_marginStart="16dp"
+                    android:contentDescription="Ingredient quiz icon"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/tvQuizTitle"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Bro Tip of the Day"
+                    android:text="Ingredient Quiz"
+                    android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textSize="16sp"/>
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintTop_toTopOf="@id/imgQuizIcon"
+                    app:layout_constraintStart_toEndOf="@id/imgQuizIcon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/tvQuizDesc"/>
 
                 <TextView
-                    android:id="@+id/tvTipContent"
-                    android:layout_width="match_parent"
+                    android:id="@+id/tvQuizDesc"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Turmeric is bright yellow, while ginger is pale brown with a fibrous texture. Turmeric stains everything it touches!"/>
-            </LinearLayout>
+                    android:text="Test your ingredient knowledge"
+                    android:textSize="14sp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintTop_toBottomOf="@id/tvQuizTitle"
+                    app:layout_constraintStart_toEndOf="@id/imgQuizIcon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/imgQuizIcon"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

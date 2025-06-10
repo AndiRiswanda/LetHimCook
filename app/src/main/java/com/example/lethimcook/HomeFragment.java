@@ -90,6 +90,12 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getActivity(), CommonMistakesActivity.class);
             getActivity().startActivity(intent);
         });
+
+        View cardQuiz = view.findViewById(R.id.cardQuiz);
+        cardQuiz.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), IngredientQuizActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override
